@@ -192,7 +192,7 @@ def daily_job():
     print(f"共抓取 {len(all_jobs)} 个职位，正在过滤IND认证公司...")
     filtered = [j for j in all_jobs
                 if is_ind_certified(j.get("company", {}).get("display_name", ""), ind_companies)]
-    filtered = filtered[:10]
+    filtered = filtered[:15]
     print(f"过滤后剩余 {len(filtered)} 个职位")
 
     send_email(filtered)
