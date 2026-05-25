@@ -19,6 +19,7 @@ EMAIL_FROM     = os.environ.get("EMAIL_FROM")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 EMAIL_TO       = os.environ.get("EMAIL_TO")
 
+print(f"APP_ID读取结果: {ADZUNA_APP_ID}") #加这行代码用来输出读取结果
 
 SEND_TIME      = "09:00"
 
