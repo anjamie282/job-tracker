@@ -124,25 +124,50 @@ def build_email_html(jobs):
     html += "</div>"
     return html
 
-def send_email(jobs):
+
+def send_email(jobs): #为了用sendgrid免费发邮件的端口修改的
     if not jobs:
         print("今天没有找到符合条件的职位")
         return
 
-    html = build_email_html(jobs)
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"每日职位推送 {datetime.now().strftime('%Y-%m-%d')} — {len(jobs)}个职位"
-    msg["From"]    = EMAIL_FROM
-    msg["To"]      = EMAIL_TO
-    msg.attach(MIMEText(html, "html"))
+    from sendgrid import SendGridAPIClient
+    from sendgrid.helpers.mail import Mail
 
+    html = build_email_html(jobs)
+    message = Mail(
+        from_email=EMAIL_FROM,
+        to_emails=EMAIL_TO,
+        subject=f"每日职位推送 {datetime.now().strftime('%Y-%m-%d')} — {len(jobs)}个职位",
+        html_content=html
+    )
     try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(EMAIL_FROM, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        sg.send(message)
         print(f"✅ 邮件已发送，包含 {len(jobs)} 个职位")
     except Exception as e:
         print(f"❌ 邮件发送失败: {e}")
+
+
+
+#这是之前的 def send_email(jobs):
+  #  if not jobs:
+   #     print("今天没有找到符合条件的职位")
+   #     return
+
+   # html = build_email_html(jobs)
+   # msg = MIMEMultipart("alternative")
+   # msg["Subject"] = f"每日职位推送 {datetime.now().strftime('%Y-%m-%d')} — {len(jobs)}个职位"
+   # msg["From"]    = EMAIL_FROM
+   # msg["To"]      = EMAIL_TO
+   # msg.attach(MIMEText(html, "html"))
+
+  #  try:
+  #      with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+  #          server.login(EMAIL_FROM, EMAIL_PASSWORD)
+  #          server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+   #     print(f"✅ 邮件已发送，包含 {len(jobs)} 个职位")
+  #  except Exception as e:
+  #      print(f"❌ 邮件发送失败: {e}")
 
 def daily_job():
     print(f"\n{'='*50}")
