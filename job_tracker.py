@@ -11,12 +11,14 @@ from datetime import datetime
 # 只需要改这里
 # ============================================================
 
-ADZUNA_APP_ID  = "77d39c06"       # 第1步获取
-ADZUNA_APP_KEY = "847a8e001401440083175f52525469c9"      # 第1步获取
+import os
 
-EMAIL_FROM     = "anjamie282@gmail.com"
-EMAIL_PASSWORD = "khlbmptuqqfkjxcc"  # 第2步获取
-EMAIL_TO       = "anjamie282@gmail.com"
+ADZUNA_APP_ID  = os.environ.get("ADZUNA_APP_ID")
+ADZUNA_APP_KEY = os.environ.get("ADZUNA_APP_KEY")
+EMAIL_FROM     = os.environ.get("EMAIL_FROM")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+EMAIL_TO       = os.environ.get("EMAIL_TO")
+
 
 SEND_TIME      = "09:00"
 
